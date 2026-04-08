@@ -86,6 +86,12 @@ Two glass-panel buttons centered below the card:
 Both have `whileHover: scale 1.03`, `whileTap: scale 0.97`. Text: `text-sm font-mono tracking-wider uppercase`.
 
 ---
+Background resources:
+
+Moon image created with Leonardo.AI
+After that I made 5s long animation in Canva
+and finally I used Ezgif to make image frames for better results.
+
 
 ## Getting Started
 
