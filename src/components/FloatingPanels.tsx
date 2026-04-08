@@ -2,6 +2,19 @@
 
 import { motion, useTransform } from "framer-motion";
 import type { MotionValue } from "framer-motion";
+import {
+  PANEL1_TITLE,
+  PANEL1_SUBTITLE,
+  PANEL1_TAG,
+  PANEL2_TITLE,
+  PANEL2_SUBTITLE,
+  PANEL3_TITLE,
+  PANEL3_SUBTITLE,
+  PANEL4_TITLE,
+  PANEL4_SUBTITLE,
+  PANEL5_TITLE,
+  PANEL5_TEXT,
+} from "@/constants/data";
 
 interface FloatingPanelsProps {
   smoothProgress: MotionValue<number>;
@@ -72,14 +85,14 @@ export default function FloatingPanels({
       >
         <div className="glass-panel rounded-2xl px-10 py-8 text-center max-w-xl border border-white/10">
           <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white mb-3 leading-tight">
-            Voyage To The Lunar Surface
+            {PANEL1_TITLE}
           </h1>
           <p className="text-xs font-mono tracking-[0.3em] text-indigo-300/80 uppercase mb-6">
-            The Artemis Archive // Powered by NASA
+            {PANEL1_SUBTITLE}
           </p>
           <div className="w-16 h-px bg-linear-to-r from-transparent via-indigo-400 to-transparent mx-auto mb-4" />
           <p className="text-sm tracking-widest text-white/50 uppercase font-mono">
-            Unveiling The Dark Side
+            {PANEL1_TAG}
           </p>
         </div>
       </motion.div>
@@ -92,10 +105,10 @@ export default function FloatingPanels({
         <motion.div style={{ x: contentX, y: contentY }}>
           <div className="glass-panel rounded-xl px-8 py-6 max-w-xs border border-indigo-500/20">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-              Lunar Mechanics
+              {PANEL2_TITLE}
             </h2>
             <p className="text-xs font-mono tracking-[0.25em] text-indigo-400 uppercase">
-              In Motion
+              {PANEL2_SUBTITLE}
             </p>
           </div>
         </motion.div>
@@ -109,10 +122,10 @@ export default function FloatingPanels({
         <motion.div style={{ x: contentX, y: contentY }}>
           <div className="glass-panel rounded-xl px-8 py-6 max-w-xs border border-white/10">
             <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">
-              Silence of the Vacuum
+              {PANEL3_TITLE}
             </h2>
             <p className="text-xs font-mono tracking-[0.25em] text-indigo-400/70 uppercase">
-              151 Frames of Lunar Rotation
+              {PANEL3_SUBTITLE}
             </p>
           </div>
         </motion.div>
@@ -126,10 +139,10 @@ export default function FloatingPanels({
         <motion.div style={{ x: contentX, y: contentY }}>
           <div className="glass-panel rounded-xl px-8 py-6 max-w-xs border border-indigo-500/15">
             <h2 className="text-2xl font-bold text-white mb-2">
-              Tracking Lunar Phases
+              {PANEL4_TITLE}
             </h2>
             <p className="text-xs font-mono tracking-[0.25em] text-indigo-300/60 uppercase">
-              Beyond the Exosphere
+              {PANEL4_SUBTITLE}
             </p>
           </div>
         </motion.div>
@@ -143,18 +156,11 @@ export default function FloatingPanels({
         <motion.div style={{ x: contentX, y: contentY }}>
           <div className="glass-panel rounded-2xl px-10 py-8 max-w-2xl border border-white/10">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4 text-center">
-              The Scale of the Void
+              {PANEL5_TITLE}
             </h2>
             <div className="w-20 h-px bg-linear-to-r from-transparent via-indigo-400 to-transparent mx-auto mb-5" />
             <p className="text-sm md:text-base leading-relaxed text-white/70 text-center">
-              The average distance between Earth and the Moon is 384,400 km —
-              roughly 30 Earths lined side by side. Light itself takes 1.28
-              seconds to cross this divide. Beyond our Moon, the nearest star
-              system, Alpha Centauri, sits 4.37 light-years away — over 40
-              trillion kilometers of interstellar vacuum. If the Earth were a
-              basketball, the Moon would be a tennis ball placed 7.4 meters
-              away, and the nearest star would be over 8,700 km distant. Space
-              is not merely vast; it is incomprehensibly, achingly empty.
+              {PANEL5_TEXT}
             </p>
           </div>
         </motion.div>

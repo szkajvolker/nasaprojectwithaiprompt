@@ -2,9 +2,10 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { RefreshCw, ArrowUp } from "lucide-react";
 import ApodCard from "./ApodCard";
+import ActionButtons from "./ActionButtons";
 import { useMouseParallax } from "@/hooks/useMouseParallax";
+import { HERO_LABEL, HERO_TITLE, HERO_SUBTITLE, HERO_EMPTY } from "@/constants/data";
 
 export interface ApodData {
   title: string;
@@ -23,11 +24,22 @@ export default function HeroSection() {
   const { contentX, contentY } = useMouseParallax(15);
 
   useEffect(() => {
-    fetch("/api/apod", { cache: "no-store" })
+    const controller = new AbortController();
+    fetch("/api/apod", { cache: "no-store", signal: controller.signal })
       .then((res) => (res.ok ? res.json() : null))
-      .then((data) => setApod(data))
-      .catch(() => setApod(null))
-      .finally(() => setLoading(false));
+      .then((data) => {
+        if (!controller.signal.aborted) setApod(data);
+      })
+      .catch((err) => {
+        if (!controller.signal.aborted) {
+          console.error("APOD fetch error:", err);
+          setApod(null);
+        }
+      })
+      .finally(() => {
+        if (!controller.signal.aborted) setLoading(false);
+      });
+    return () => controller.abort();
   }, []);
 
   const fetchRandomApod = useCallback(async () => {
@@ -44,10 +56,6 @@ export default function HeroSection() {
       setLoading(false);
     }
   }, []);
-
-  const returnToOrbit = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <section className="relative min-h-screen overflow-hidden">
@@ -79,13 +87,13 @@ export default function HeroSection() {
             transition={{ duration: 0.8 }}
           >
             <p className="text-xs font-mono tracking-[0.4em] text-indigo-400/70 uppercase mb-4">
-              Mission Data Feed
+              {HERO_LABEL}
             </p>
             <h2 className="text-4xl md:text-6xl font-bold text-white mb-3 tracking-tight">
-              Cosmic View
+              {HERO_TITLE}
             </h2>
             <p className="text-lg text-white/40 font-light">
-              Astronomy Picture of the Day
+              {HERO_SUBTITLE}
             </p>
             <div className="w-24 h-px bg-linear-to-r from-transparent via-indigo-500 to-transparent mx-auto mt-6" />
           </motion.div>
@@ -109,44 +117,19 @@ export default function HeroSection() {
         {!apod && !loading && (
           <div className="text-center py-20">
             <p className="text-white/30 font-mono text-sm">
-              No data received from NASA API
+              {HERO_EMPTY}
             </p>
           </div>
         )}
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-12">
-          <motion.button
-            onClick={fetchRandomApod}
-            disabled={loading}
-            className="glass-panel rounded-xl px-8 py-4 flex items-center gap-3 text-white/80 hover:text-white border border-indigo-500/20 hover:border-indigo-500/40 transition-colors disabled:opacity-50 cursor-pointer"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            <motion.div
-              animate={loading ? { rotate: 360 } : {}}
-              transition={
-                loading ? { duration: 1, repeat: Infinity, ease: "linear" } : {}
-              }
-            >
-              <RefreshCw size={18} />
-            </motion.div>
-            <span className="text-sm font-mono tracking-wider uppercase">
-              {loading ? "Initiating Jump..." : "Randomize Coordinates"}
-            </span>
-          </motion.button>
-
-          <motion.button
-            onClick={returnToOrbit}
-            className="glass-panel rounded-xl px-8 py-4 flex items-center gap-3 text-white/80 hover:text-white border border-white/10 hover:border-white/20 transition-colors cursor-pointer"
-            whileHover={{ scale: 1.03 }}
-            whileTap={{ scale: 0.97 }}
-          >
-            <ArrowUp size={18} />
-            <span className="text-sm font-mono tracking-wider uppercase">
-              Return to Orbit
-            </span>
-          </motion.button>
+        <div className="mt-12">
+          <ActionButtons
+            onRefresh={fetchRandomApod}
+            loading={loading}
+            refreshLabel="Randomize Coordinates"
+            loadingLabel="Initiating Jump..."
+          />
         </div>
       </motion.div>
     </section>

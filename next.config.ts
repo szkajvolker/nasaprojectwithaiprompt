@@ -6,6 +6,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "apod.nasa.gov" },
       { protocol: "https", hostname: "www.youtube.com" },
       { protocol: "https", hostname: "img.youtube.com" },
+      { protocol: "https", hostname: "images-assets.nasa.gov" },
     ],
   },
 };
