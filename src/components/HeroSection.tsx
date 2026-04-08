@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { RefreshCw, ArrowUp } from "lucide-react";
 import ApodCard from "./ApodCard";
@@ -16,15 +16,19 @@ export interface ApodData {
   copyright?: string;
 }
 
-export default function HeroSection({
-  initialApod,
-}: {
-  initialApod: ApodData | null;
-}) {
-  const [apod, setApod] = useState<ApodData | null>(initialApod);
-  const [loading, setLoading] = useState(false);
+export default function HeroSection() {
+  const [apod, setApod] = useState<ApodData | null>(null);
+  const [loading, setLoading] = useState(true);
   const [key, setKey] = useState(0);
   const { contentX, contentY } = useMouseParallax(15);
+
+  useEffect(() => {
+    fetch("/api/apod", { cache: "no-store" })
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => setApod(data))
+      .catch(() => setApod(null))
+      .finally(() => setLoading(false));
+  }, []);
 
   const fetchRandomApod = useCallback(async () => {
     setLoading(true);
