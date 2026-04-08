@@ -1,6 +1,8 @@
 import SpaceScrollHero from "@/components/SpaceScrollHero";
 import HeroSection from "@/components/HeroSection";
 
+export const dynamic = "force-dynamic";
+
 const NASA_API_KEY = process.env.NASA_API_KEY || "DEMO_KEY";
 
 async function getApod() {
